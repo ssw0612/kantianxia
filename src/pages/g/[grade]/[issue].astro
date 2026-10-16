@@ -1,0 +1,125 @@
+---
+/**
+ * 期页 /g/<grade>/<issue>
+ * 例：/g/2021/issue-1
+ * - 期标题 + 日期
+ * - 该期所有作品（文稿 + 美术 混合）
+ */
+import Base from '../../../layouts/Base.astro';
+import WorkCard from '../../../components/WorkCard.astro';
+import { grades, issues, worksOf } from '../../../data/works.js';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const g of grades) {
+    for (const it of issues[g.id] || []) {
+      paths.push({ params: { grade: String(g.id), issue: it.id } });
+    }
+  }
+  return paths;
+}
+
+const { grade, issue } = Astro.params;
+const gradeId = Number(grade);
+const gradeMeta = grades.find((g) => g.id === gradeId);
+const issueMeta = (issues[gradeId] || []).find((it) => it.id === issue);
+if (!gradeMeta || !issueMeta) {
+  return Astro.redirect('/404');
+}
+const works = worksOf(gradeId, issue);
+---
+<Base title={`${issueMeta.label} · ${gradeId} 届 · 看天下政治社`}>
+  <section class="section section--tight">
+    <div class="container container--narrow">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="/">首页</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/g/${gradeId}`}>{gradeId} 届</a>
+        <span aria-hidden="true">/</span>
+        <span>{issueMeta.label}</span>
+      </nav>
+
+      <p class="section-eyebrow">ISSUE · {issueMeta.date}</p>
+      <h1 class="section-title">{gradeId} 届 · {issueMeta.label}</h1>
+      <p class="section-lead">{issueMeta.summary}</p>
+
+      <p class="works-count">{works.length} 件作品 · 文稿 {works.filter((w) => w.type === 'text').length} · 美术 {works.filter((w) => w.type === 'art').length}</p>
+    </div>
+  </section>
+
+  <section class="section section--tight" style="padding-top: 32px;">
+    <div class="container">
+      <div class="works-list">
+        {works.length === 0 ? (
+          <p class="empty">本期暂无作品。</p>
+        ) : (
+          works.map((w, i) => <WorkCard work={w} index={i} />)
+        )}
+      </div>
+
+      <nav class="issue-nav" aria-label="期导航">
+        <a href={`/g/${gradeId}`} class="issue-nav-link">← 返回 {gradeId} 届</a>
+        <a href="/#grades" class="issue-nav-link">返回 6 届总索引</a>
+      </nav>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 28px;
+  }
+  .crumbs a {
+    color: var(--text-faint);
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .crumbs a:hover { color: var(--accent); }
+
+  .works-count {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.18em;
+  }
+
+  .works-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 760px) {
+    .works-list { grid-template-columns: 1fr; }
+  }
+
+  .empty {
+    color: var(--text-faint);
+    font-family: var(--font-serif);
+    letter-spacing: var(--tracking-cn);
+  }
+
+  .issue-nav {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .issue-nav-link {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text-soft);
+    letter-spacing: var(--tracking-cn);
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .issue-nav-link:hover { color: var(--accent); }
+</style>

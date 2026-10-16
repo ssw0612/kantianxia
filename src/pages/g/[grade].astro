@@ -1,0 +1,83 @@
+---
+/**
+ * 届页 /g/<grade>
+ * 例：/g/2021
+ * - 届标题 + 简介
+ * - 该届所有期（卡片网格）
+ * - 文末"上一届 / 下一届"导航
+ */
+import Base from '../../layouts/Base.astro';
+import IssueCard from '../../components/IssueCard.astro';
+import { grades, issuesOf } from '../../data/works.js';
+
+export function getStaticPaths() {
+  return grades.map((g) => ({
+    params: { grade: String(g.id) },
+  }));
+}
+
+const { grade } = Astro.params;
+const gradeId = Number(grade);
+const gradeMeta = grades.find((g) => g.id === gradeId);
+if (!gradeMeta) {
+  return Astro.redirect('/404');
+}
+const list = issuesOf(gradeId);
+
+// 上一届 / 下一届
+const sorted = [...grades].sort((a, b) => a.id - b.id);
+const idx = sorted.findIndex((g) => g.id === gradeId);
+const prev = idx > 0 ? sorted[idx - 1] : null;
+const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+---
+<Base title={`${gradeId} 届 · 看天下政治社`}>
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">GRADE · {gradeId}</p>
+      <h1 class="section-title">{gradeId} 届作品</h1>
+      <p class="section-lead">{gradeMeta.tagline}</p>
+
+      <div class="card-grid card-grid--2" style="margin-top: 56px;">
+        {list.length === 0 ? (
+          <p class="empty">本届暂无作品。</p>
+        ) : (
+          list.map((it) => <IssueCard gradeId={gradeId} issue={it} />)
+        )}
+      </div>
+
+      {(prev || next) && (
+        <nav class="grade-nav" aria-label="届导航">
+          {prev ? <a href={`/g/${prev.id}`} class="grade-nav-link">← {prev.label}</a> : <span />}
+          <a href="/#grades" class="grade-nav-link">返回 6 届总索引</a>
+          {next ? <a href={`/g/${next.id}`} class="grade-nav-link">{next.label} →</a> : <span />}
+        </nav>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .empty {
+    color: var(--text-faint);
+    font-family: var(--font-serif);
+    letter-spacing: var(--tracking-cn);
+  }
+  .grade-nav {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .grade-nav-link {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text-soft);
+    letter-spacing: var(--tracking-cn);
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .grade-nav-link:hover { color: var(--accent); }
+</style>

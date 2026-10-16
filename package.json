@@ -1,0 +1,17 @@
+{
+  "name": "kanxia-zhengzhishe",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "看天下政治社 · 社团作品网站（Astro 静态站）",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.18"
+  }
+}

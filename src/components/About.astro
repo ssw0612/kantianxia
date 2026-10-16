@@ -1,0 +1,76 @@
+---
+/**
+ * About.astro —— 首页"关于社团"段
+ */
+import { site } from '../data/works.js';
+---
+<section class="about section" id="about">
+  <div class="container">
+    <p class="section-eyebrow">ABOUT · 关于</p>
+    <h2 class="section-title">关于社团</h2>
+
+    <div class="about-grid">
+      <div class="about-main">
+        <p class="about-lead">{site.about}</p>
+      </div>
+      <aside class="about-aside">
+        <div class="about-block">
+          <h4 class="about-h">成员构成</h4>
+          <p>{site.members}</p>
+        </div>
+        <div class="about-block">
+          <h4 class="about-h">活动范围</h4>
+          <p>{site.scope}</p>
+        </div>
+        <div class="about-block">
+          <h4 class="about-h">联系</h4>
+          <p>{site.contact}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    border-top: 1px solid var(--border);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 64px;
+    margin-top: 48px;
+  }
+  .about-lead {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 2;
+    color: var(--text);
+    letter-spacing: var(--tracking-cn);
+  }
+  .about-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-left: 28px;
+    border-left: 1px solid var(--border);
+  }
+  .about-block h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--accent);
+    letter-spacing: var(--tracking-cn);
+    margin-bottom: 8px;
+  }
+  .about-block p {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 800px) {
+    .about-grid { grid-template-columns: 1fr; gap: 36px; }
+    .about-aside { padding-left: 0; border-left: 0; border-top: 1px dashed var(--border); padding-top: 24px; }
+  }
+</style>

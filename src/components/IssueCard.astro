@@ -1,0 +1,40 @@
+---
+/**
+ * IssueCard.astro —— 届页内的"期"卡片
+ */
+interface Props {
+  gradeId: number;
+  issue: {
+    id: string;
+    label: string;
+    date: string;
+    summary: string;
+    worksCount: number;
+  };
+}
+const { gradeId, issue } = Astro.props;
+const href = `/g/${gradeId}/${issue.id}`;
+---
+<a class="issue-card card" href={href}>
+  <p class="card-eyebrow">{issue.date}</p>
+  <h3 class="card-title">{issue.label}</h3>
+  <p class="issue-summary">{issue.summary}</p>
+  <p class="card-meta">{issue.worksCount} 件作品</p>
+</a>
+
+<style>
+  .issue-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 168px;
+  }
+  .issue-summary {
+    font-family: var(--font-serif);
+    font-size: 14.5px;
+    color: var(--text-soft);
+    letter-spacing: var(--tracking-cn);
+    line-height: 1.75;
+    flex-grow: 1;
+  }
+</style>

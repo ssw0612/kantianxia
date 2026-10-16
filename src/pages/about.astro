@@ -1,0 +1,64 @@
+---
+/**
+ * 关于页 /about —— 单独页（导航"关于"指向这里）
+ */
+import Base from '../layouts/Base.astro';
+import { site } from '../data/works.js';
+---
+<Base title="关于 · 看天下政治社">
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="section-eyebrow">ABOUT · 关于</p>
+      <h1 class="section-title">关于社团</h1>
+
+      <div class="prose" style="margin-top: 32px;">
+        <p>{site.about}</p>
+        <p>{site.members}</p>
+        <p>{site.scope}</p>
+      </div>
+
+      <hr class="rule" />
+
+      <h2 class="block-title">我们在做什么</h2>
+      <div class="prose">
+        <p>
+          我们每届任期一年，开学第一个月做选题，五个月内做稿，
+          学期末做一份当年的纸面合订本。
+          不是为了出书，而是为了让大家读一读自己和同届的人。
+        </p>
+        <p>
+          美术这边以版画和海报为主。我们故意没用电脑做主图——让画面有手温。
+        </p>
+      </div>
+
+      <hr class="rule" />
+
+      <h2 class="block-title">联系方式</h2>
+      <p class="contact-line">{site.contact}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 56px 0 40px;
+  }
+  .block-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--text);
+    letter-spacing: var(--tracking-cn);
+    margin-bottom: 22px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .contact-line {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--text-soft);
+    letter-spacing: var(--tracking-cn);
+  }
+</style>

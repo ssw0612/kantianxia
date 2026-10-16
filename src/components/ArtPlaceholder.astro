@@ -1,0 +1,157 @@
+---
+/**
+ * ArtPlaceholder.astro —— 美术占位（内联 SVG，零外部图）
+ * 6 种基本形，按 svgName 切换。
+ */
+interface Props {
+  svgName?: string;
+  alt?: string;
+  ratio?: string; // 宽高比，CSS
+}
+const { svgName = 'default', alt = '占位美术', ratio = '4 / 3' } = Astro.props;
+
+const palettes = {
+  wave:     { bg: '#22221e', fg: '#a83232', accent: '#3a3733' },
+  'tiger-eye': { bg: '#22221e', fg: '#a83232', accent: '#544f48' },
+  mountain: { bg: '#22221e', fg: '#a83232', accent: '#544f48' },
+  grid:     { bg: '#22221e', fg: '#e8e3d8', accent: '#3a3733' },
+  stamp:    { bg: '#22221e', fg: '#a83232', accent: '#544f48' },
+  default:  { bg: '#22221e', fg: '#e8e3d8', accent: '#3a3733' },
+};
+const c = palettes[svgName] || palettes.default;
+const id = `svg-${svgName}-${Math.abs(hashStr(svgName + alt))}`;
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return h;
+}
+---
+<figure class="art" style={`aspect-ratio: ${ratio};`}>
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    role="img"
+    aria-label={alt}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="0" y="0" width="400" height="300" fill={c.bg} />
+
+    {svgName === 'wave' && (
+      <>
+        {/* 印章红曲线 */}
+        <path
+          d="M 0 200 Q 100 140 200 180 T 400 160 L 400 300 L 0 300 Z"
+          fill={c.fg}
+          opacity="0.85"
+        />
+        <path
+          d="M 0 240 Q 100 200 200 220 T 400 210"
+          stroke={c.accent}
+          stroke-width="1.5"
+          fill="none"
+          opacity="0.6"
+        />
+        <line x1="0" y1="80" x2="400" y2="80" stroke={c.accent} stroke-width="1" opacity="0.5" />
+        <text x="20" y="44" fill={c.fg} font-family="serif" font-size="14" letter-spacing="3">
+          WAVE · 占位
+        </text>
+      </>
+    )}
+
+    {svgName === 'tiger-eye' && (
+      <>
+        <circle cx="200" cy="150" r="90" fill="none" stroke={c.accent} stroke-width="1.4" />
+        <circle cx="200" cy="150" r="60" fill="none" stroke={c.accent} stroke-width="1" />
+        <circle cx="200" cy="150" r="30" fill={c.fg} opacity="0.9" />
+        <circle cx="200" cy="150" r="6" fill={c.bg} />
+        <line x1="0" y1="150" x2="400" y2="150" stroke={c.accent} stroke-width="0.6" opacity="0.5" />
+        <text x="20" y="280" fill={c.fg} font-family="serif" font-size="13" letter-spacing="3">
+          EYE · 占位
+        </text>
+      </>
+    )}
+
+    {svgName === 'mountain' && (
+      <>
+        <polygon points="0,260 80,170 140,210 220,120 300,180 400,150 400,300 0,300" fill={c.accent} opacity="0.55" />
+        <polygon points="0,290 100,220 180,250 260,200 360,240 400,230 400,300 0,300" fill={c.fg} opacity="0.85" />
+        <line x1="0" y1="80" x2="400" y2="80" stroke={c.accent} stroke-width="0.6" opacity="0.5" />
+        <text x="20" y="44" fill={c.fg} font-family="serif" font-size="14" letter-spacing="3">
+          MOUNTAIN · 占位
+        </text>
+      </>
+    )}
+
+    {svgName === 'grid' && (
+      <>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <line x1={i * 50} y1="0" x2={i * 50} y2="300" stroke={c.accent} stroke-width="0.6" opacity="0.5" />
+        ))}
+        {Array.from({ length: 6 }).map((_, i) => (
+          <line x1="0" y1={i * 50} x2="400" y2={i * 50} stroke={c.accent} stroke-width="0.6" opacity="0.5" />
+        ))}
+        <rect x="120" y="90" width="160" height="120" fill={c.fg} opacity="0.18" />
+        <rect x="120" y="90" width="160" height="120" fill="none" stroke={c.fg} stroke-width="1.5" />
+        <text x="120" y="80" fill={c.fg} font-family="serif" font-size="14" letter-spacing="3">
+          GRID · 占位
+        </text>
+      </>
+    )}
+
+    {svgName === 'stamp' && (
+      <>
+        <rect
+          x="120" y="80" width="160" height="140"
+          fill="none"
+          stroke={c.fg}
+          stroke-width="3"
+        />
+        <rect
+          x="120" y="80" width="160" height="140"
+          fill={c.fg}
+          opacity="0.08"
+        />
+        <text
+          x="200" y="172"
+          fill={c.fg}
+          font-family="serif"
+          font-size="64"
+          text-anchor="middle"
+          letter-spacing="2"
+        >政</text>
+        <text x="120" y="60" fill={c.fg} font-family="serif" font-size="13" letter-spacing="3">
+          STAMP · 占位
+        </text>
+      </>
+    )}
+
+    {svgName === 'default' && (
+      <>
+        <line x1="0" y1="150" x2="400" y2="150" stroke={c.fg} stroke-width="1.2" />
+        <circle cx="200" cy="150" r="20" fill={c.fg} />
+        <text x="20" y="44" fill={c.fg} font-family="serif" font-size="14" letter-spacing="3">
+          ART · 占位
+        </text>
+      </>
+    )}
+  </svg>
+</figure>
+
+<style>
+  .art {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background-color: var(--bg-soft);
+    transition: border-color var(--dur-hover) var(--ease);
+  }
+  .art:hover {
+    border-color: var(--accent);
+  }
+  .art svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>

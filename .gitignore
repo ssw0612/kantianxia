@@ -1,0 +1,25 @@
+# 构建产物
+dist/
+.astro/
+
+# 依赖
+node_modules/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*
+
+# 环境
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# 真实学生稿件（不入版本库）
+政治社/

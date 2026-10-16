@@ -1,0 +1,40 @@
+---
+/**
+ * GradeCard.astro —— 首页 6 届卡片
+ */
+interface Props {
+  grade: {
+    id: number;
+    label: string;
+    tagline: string;
+    issueCount: number;
+    worksCount: number;
+  };
+}
+const { grade } = Astro.props;
+---
+<a class="grade-card card" href={`/g/${grade.id}`}>
+  <p class="card-eyebrow">GRADE · {grade.id}</p>
+  <h3 class="card-title">{grade.label}</h3>
+  <p class="grade-tagline">{grade.tagline}</p>
+  <p class="card-meta">
+    {grade.issueCount} 期 · {grade.worksCount} 件作品
+  </p>
+</a>
+
+<style>
+  .grade-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+  }
+  .grade-tagline {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text-soft);
+    letter-spacing: var(--tracking-cn);
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+</style>

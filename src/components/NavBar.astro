@@ -1,0 +1,157 @@
+---
+/**
+ * NavBar.astro —— 全站顶部固定导航
+ * 极简：左社名 + 右 6 届下拉 + "首页/关于"
+ * 当前所在届自动高亮。
+ */
+interface NavItem {
+  label: string;
+  href: string;
+  match: string;
+}
+interface Props {
+  navItems: NavItem[];
+  currentPath: string;
+}
+const { navItems, currentPath } = Astro.props;
+
+function isActive(item: NavItem): boolean {
+  const itemPath = (item.match || '/').replace(/\/$/, '') || '/';
+  return currentPath === itemPath ||
+    (itemPath !== '/' && currentPath.startsWith(itemPath + '/'));
+}
+---
+<nav class="navbar" aria-label="主导航">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand" aria-label="返回首页">
+      <span class="navbar-brand-mark" aria-hidden="true">政</span>
+      <span class="navbar-brand-text">看天下</span>
+    </a>
+
+    <ul class="navbar-menu">
+      {navItems.map((item) => (
+        <li class="navbar-item">
+          <a
+            class:list={['navbar-link', { active: isActive(item) }]}
+            href={item.href}
+            aria-current={isActive(item) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(26, 26, 28, 0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .navbar-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 14px var(--side-pad);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text);
+    font-family: var(--font-serif);
+  }
+  .navbar-brand:hover { color: var(--accent); }
+
+  .navbar-brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-size: 17px;
+    letter-spacing: 0;
+    line-height: 1;
+    transition:
+      background-color var(--dur-hover) var(--ease),
+      color var(--dur-hover) var(--ease);
+  }
+  .navbar-brand:hover .navbar-brand-mark {
+    background-color: var(--accent);
+    color: #f7efe3;
+  }
+
+  .navbar-brand-text {
+    font-size: 17px;
+    letter-spacing: var(--tracking-cn);
+  }
+
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navbar-link {
+    position: relative;
+    display: inline-block;
+    padding: 6px 2px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: var(--text-soft);
+    white-space: nowrap;
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .navbar-link::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-hover) var(--ease);
+  }
+  .navbar-link:hover { color: var(--accent); }
+  .navbar-link:hover::after { transform: scaleX(1); }
+  .navbar-link.active { color: var(--text); }
+  .navbar-link.active::after { transform: scaleX(1); }
+
+  @media (max-width: 720px) {
+    .navbar-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .navbar-menu {
+      width: 100%;
+      overflow-x: auto;
+      gap: 18px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .navbar-menu::-webkit-scrollbar { display: none; }
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+/**
+ * Base.astro —— 所有页面共用的"外壳"
+ * 负责：网页标题、描述、全局样式引用、顶部导航、内容 slot、Footer。
+ * 想改整站标题/副标题/版权：去 src/data/works.js 改 site。
+ * 导航项：去 src/data/works.js 改 navItems。
+ */
+import { site, navItems } from '../data/works.js';
+import NavBar from '../components/NavBar.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.pageTitle, description = site.description } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#1a1a1c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <NavBar navItems={navItems} currentPath={currentPath} />
+    <main class="page">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <!-- 文稿展开 / 关闭：小段原生 JS，无依赖 -->
+    <script>
+      (function () {
+        document.querySelectorAll('[data-work-toggle]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('aria-controls');
+            const panel = id ? document.getElementById(id) : null;
+            if (!panel) return;
+            const open = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+            panel.classList.toggle('is-open', !open);
+            if (!open) {
+              btn.querySelector('.work-toggle-label')?.replaceChildren(
+                Object.assign(document.createElement('span'), { textContent: '收起' })
+              );
+            } else {
+              btn.querySelector('.work-toggle-label')?.replaceChildren(
+                Object.assign(document.createElement('span'), { textContent: '展开全文' })
+              );
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  .page {
+    padding-top: 84px; /* 给导航让位 */
+  }
+</style>

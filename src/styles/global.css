@@ -1,0 +1,401 @@
+/* ============================================================
+   看天下政治社 —— 全局样式
+   ------------------------------------------------------------
+   设计语言：
+   - 暖深灰底（#1a1a1c），不用纯黑，更"纸"
+   - 米白文字（#e8e3d8）
+   - 印章红点缀（#a83232）—— 全站唯一强调色
+   - 标题用衬线体（思源宋体类），正文用系统无衬线
+   - 动效极少（hover 颜色变化 + 0.4s 缓慢；不写光晕/光点/噪点）
+   - 多留白
+   改色 / 改间距 → 改 :root 里的变量即可。
+   ============================================================ */
+
+:root {
+  /* ---------- 颜色（暖 + 印章红） ---------- */
+  --bg:           #1a1a1c;          /* 页面底色：暖深灰 */
+  --bg-soft:      #222220;          /* 卡片底色：稍亮一点的暖灰 */
+  --bg-softer:    #282826;          /* 卡片悬停底色 */
+  --text:         #e8e3d8;          /* 主文字：米白 */
+  --text-soft:    #a8a39a;          /* 次要文字：中米色 */
+  --text-faint:   #6e6a62;          /* 更弱的文字 */
+  --border:       #3a3733;          /* 细边线：暗米色 */
+  --border-hover: #544f48;          /* 悬停时的边线 */
+  --accent:       #a83232;          /* 印章红：全站唯一强调色 */
+  --accent-soft:  #c44848;          /* 印章红亮调（hover） */
+  --accent-bg:    rgba(168, 50, 50, 0.08); /* 印章红低饱和背景（轻挑用） */
+
+  /* ---------- 字体 ---------- */
+  --font-serif: 'Source Han Serif SC', 'Noto Serif CJK SC',
+                'STZhongsong', 'STSong', 'SimSun', 'Songti SC', serif;
+  --font-sans:  -apple-system, BlinkMacSystemFont, 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei',
+                'Source Han Sans SC', 'Noto Sans CJK SC',
+                'Helvetica Neue', Arial, sans-serif;
+
+  /* ---------- 排版 ---------- */
+  --tracking-wide:  0.04em;
+  --tracking-xwide: 0.18em;          /* 大标题/小标签字距 */
+  --tracking-cn:    0.08em;          /* 中文标题字距 */
+  --max-width:    1080px;
+  --max-width-narrow: 720px;
+  --side-pad:     28px;
+  --side-pad-mobile: 20px;
+
+  /* ---------- 间距（多留白） ---------- */
+  --space-section:  112px;
+  --space-section-mobile: 72px;
+  --space-block:    48px;
+
+  /* ---------- 动效（极少） ---------- */
+  --ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-hover:   0.4s;
+}
+
+/* ============================================================
+   基础重置
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, p, figure, blockquote, ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul, ol { list-style: none; }
+
+a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease);
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+img, svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* 衬线大字（标题通用） */
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+/* ============================================================
+   容器
+   ============================================================ */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--side-pad);
+  padding-right: var(--side-pad);
+}
+
+.container--narrow {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  padding-left: var(--side-pad);
+  padding-right: var(--side-pad);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --side-pad: var(--side-pad-mobile);
+  }
+}
+
+/* ============================================================
+   Section 通用（多留白）
+   ============================================================ */
+.section {
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+}
+
+.section--tight {
+  padding-top: calc(var(--space-section) * 0.7);
+  padding-bottom: calc(var(--space-section) * 0.7);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-top: var(--space-section-mobile);
+    padding-bottom: var(--space-section-mobile);
+  }
+}
+
+/* Section 标题排版（左侧小 eyebrow + 大衬线标题 + 印章红点缀） */
+.section-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: var(--tracking-xwide);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 4.2vw, 44px);
+  letter-spacing: var(--tracking-cn);
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 18px;
+}
+
+/* 标题里的印章红短横（出版物感） */
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  background-color: var(--accent);
+  margin-right: 18px;
+  vertical-align: 0.32em;
+  transition: width var(--dur-hover) var(--ease);
+}
+
+.section:hover .section-title::before {
+  width: 56px;
+}
+
+.section-lead {
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  line-height: 1.95;
+  color: var(--text-soft);
+  max-width: 36em;
+}
+
+/* ============================================================
+   按钮（少量）
+   ============================================================ */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border: 1px solid var(--border-hover);
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: var(--tracking-cn);
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    color var(--dur-hover) var(--ease),
+    border-color var(--dur-hover) var(--ease),
+    background-color var(--dur-hover) var(--ease);
+}
+
+.btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background-color: var(--accent-bg);
+}
+
+.btn--primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #f7efe3;
+}
+
+.btn--primary:hover {
+  background-color: var(--accent-soft);
+  border-color: var(--accent-soft);
+  color: #ffffff;
+}
+
+/* ============================================================
+   卡片（届、期、作品通用）
+   ============================================================ */
+.card {
+  display: block;
+  padding: 28px 26px;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition:
+    background-color var(--dur-hover) var(--ease),
+    border-color var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
+}
+
+.card:hover {
+  background-color: var(--bg-softer);
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+.card-eyebrow {
+  font-size: 11px;
+  letter-spacing: var(--tracking-xwide);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: var(--tracking-cn);
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 12px;
+  transition: color var(--dur-hover) var(--ease);
+}
+
+.card:hover .card-title {
+  color: var(--accent);
+}
+
+.card-meta {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+
+/* ============================================================
+   卡片网格
+   ============================================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 48px;
+}
+
+.card-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 960px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .card-grid,
+  .card-grid--2 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* ============================================================
+   内容块（正文段落）
+   ============================================================ */
+.prose p {
+  font-size: 16.5px;
+  line-height: 2;
+  color: var(--text);
+  margin-bottom: 1.4em;
+}
+
+.prose p:first-child {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.85;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.prose p:first-child::first-letter {
+  color: var(--accent);
+  font-size: 1.2em;
+}
+
+/* ============================================================
+   Footer 通用
+   ============================================================ */
+.footer {
+  margin-top: var(--space-section);
+  padding: 56px 0 36px;
+  border-top: 1px solid var(--border);
+  color: var(--text-faint);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-copy {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+  padding-left: var(--side-pad);
+  padding-right: var(--side-pad);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.footer-copy a {
+  color: var(--text-faint);
+}
+.footer-copy a:hover {
+  color: var(--accent);
+}
+
+/* ============================================================
+   选区样式（出版物感：用印章红）
+   ============================================================ */
+::selection {
+  background-color: var(--accent);
+  color: #f7efe3;
+}
+
+/* 滚动条（极简，仅桌面） */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-hover);
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}

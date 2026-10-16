@@ -1,0 +1,35 @@
+---
+/**
+ * 首页 /
+ * - Hero
+ * - 6 届索引（卡片网格）
+ * - 关于社团
+ * - SiteFooter
+ */
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import GradeCard from '../components/GradeCard.astro';
+import About from '../components/About.astro';
+import { grades, siteStats } from '../data/works.js';
+
+const stats = siteStats();
+---
+<Base title="看天下政治社 · 作品">
+  <Hero />
+
+  <section class="section" id="grades">
+    <div class="container">
+      <p class="section-eyebrow">ARCHIVE · {stats.gradeCount} 届 · {stats.issueTotal} 期 · {stats.worksTotal} 件作品</p>
+      <h2 class="section-title">六届作品</h2>
+      <p class="section-lead">
+        自 2021 年起，每年一届。文稿与版画交替出场，构成一份关于"我们怎么想事情"的小型档案。
+      </p>
+
+      <div class="card-grid">
+        {grades.map((g) => <GradeCard grade={g} />)}
+      </div>
+    </div>
+  </section>
+
+  <About />
+</Base>

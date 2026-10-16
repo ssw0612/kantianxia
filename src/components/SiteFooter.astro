@@ -1,0 +1,76 @@
+---
+/**
+ * SiteFooter.astro —— 全站底部
+ */
+import { site } from '../data/works.js';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-brand">{site.name}</p>
+    <p class="footer-tagline">{site.tagline}</p>
+    <p class="footer-contact">{site.contact}</p>
+  </div>
+  <div class="footer-copy">
+    <span>{site.copyright}</span>
+    <a href="#top" class="footer-top">回到顶部 ↑</a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--space-section);
+    padding-top: 56px;
+    padding-bottom: 36px;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    background-color: var(--bg);
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 0 var(--side-pad);
+  }
+  .footer-brand {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    letter-spacing: var(--tracking-cn);
+    color: var(--text);
+  }
+  .footer-tagline {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    letter-spacing: 0.04em;
+    max-width: 38em;
+  }
+  .footer-contact {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+  }
+  .footer-copy {
+    margin-top: 32px;
+    padding: 18px var(--side-pad) 0;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .footer-copy a {
+    color: var(--text-faint);
+  }
+  .footer-copy a:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 540px) {
+    .footer-copy { flex-direction: column; align-items: center; gap: 8px; }
+  }
+</style>
