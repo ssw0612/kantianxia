@@ -28,6 +28,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="theme-color" content="#1a1a1c" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
+
+    <!--
+      51LA 访问统计（看天下政治社项目 comId: 3RWewGWWew3j3mhQ）
+      整站所有页面统一统计。改用 / 不用，删下面两行即可。
+      数据在 51LA 控制台查看：https://v6.51.la
+    -->
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3RWewGWWew3j3mhQ",ck:"3RWewGWWew3j3mhQ"})</script>
   </head>
   <body>
     <NavBar navItems={navItems} currentPath={currentPath} />
